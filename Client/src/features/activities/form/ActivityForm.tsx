@@ -8,13 +8,15 @@ type Props = {
 	setEditMode: (editMode: boolean) => void;
 	createActivity: (activity: IActivity) => void;
 	editActivity: (activity: IActivity) => void;
+	submitting: boolean;
 };
 
 const ActivityForm: FC<Props> = ({
 	setEditMode,
 	activity: initialActivitiyState,
 	createActivity,
-	editActivity
+	editActivity,
+	submitting
 }) => {
 	const [activity, setActivity] = useState<IActivity>(
 		initialActivitiyState ?? {
@@ -85,7 +87,7 @@ const ActivityForm: FC<Props> = ({
 					placeholder="Venue"
 					value={activity.venue}
 				/>
-				<Button floated="right" positive type="submit" content="Submit" />
+				<Button loading={submitting} floated="right" positive type="submit" content="Submit" />
 				<Button onClick={() => setEditMode(false)} floated="right" type="submit" content="Cancel" />
 			</Form>
 		</Segment>

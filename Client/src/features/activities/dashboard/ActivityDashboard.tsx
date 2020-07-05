@@ -15,6 +15,7 @@ type Props = {
 	createActivity: (activity: IActivity) => void;
 	editActivity: (activity: IActivity) => void;
 	deleteActivity: (id: string) => void;
+	submitting: boolean;
 };
 
 const ActivityDashboard: FC<Props> = ({
@@ -26,7 +27,8 @@ const ActivityDashboard: FC<Props> = ({
 	editActivity,
 	deleteActivity,
 	editMode,
-	setEditMode
+	setEditMode,
+	submitting
 }) => {
 	return (
 		<Grid>
@@ -35,6 +37,7 @@ const ActivityDashboard: FC<Props> = ({
 					activities={activities}
 					onSelectActivity={onSelectActivity}
 					deleteActivity={deleteActivity}
+					submitting={submitting}
 				/>
 			</Grid.Column>
 			<Grid.Column width={6}>
@@ -52,6 +55,7 @@ const ActivityDashboard: FC<Props> = ({
 						editActivity={editActivity}
 						activity={selectedActivity}
 						setEditMode={setEditMode}
+						submitting={submitting}
 					/>
 				)}
 			</Grid.Column>
