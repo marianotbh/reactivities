@@ -1,21 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Menu, Container, Button } from "semantic-ui-react";
+import ActivityStore from "../../app/store/activityStore";
+import { observer } from "mobx-react-lite";
 
-type Props = {
-	onCreate: () => void;
-};
+const Navbar: React.FC = () => {
+	const activityStore = useContext(ActivityStore);
 
-const Navbar: React.FC<Props> = ({ onCreate }) => {
 	return (
 		<Menu inverted fixed="top">
 			<Container>
 				<Menu.Item header>
 					<img src="/assets/logo.png" alt="logo" style={{ marginRight: "0.75rem" }} />
-					Appita
+					TodoApp
 				</Menu.Item>
 				<Menu.Item name="Activities" />
 				<Menu.Item>
-					<Button onClick={onCreate} positive>
+					<Button onClick={activityStore.openCreateForm} positive>
 						New Activity
 					</Button>
 				</Menu.Item>
@@ -24,4 +24,4 @@ const Navbar: React.FC<Props> = ({ onCreate }) => {
 	);
 };
 
-export default Navbar;
+export default observer(Navbar);

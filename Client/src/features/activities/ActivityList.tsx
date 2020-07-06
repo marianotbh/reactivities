@@ -1,33 +1,36 @@
-import React, { FC, SyntheticEvent, useState, useEffect } from "react";
+import React, { FC, SyntheticEvent, useState, useEffect, useContext } from "react";
 import { Item, Button, Label, Segment } from "semantic-ui-react";
-import { IActivity } from "../../../app/models/activity";
+import { observer } from "mobx-react-lite";
+import ActivityStore from "../../app/store/activityStore";
+import Loader from "../../app/layout/Loader";
 
-type Props = {
-	activities: IActivity[];
-	onSelectActivity: (id: string) => void;
-	deleteActivity: (id: string) => void;
-	submitting: boolean;
-};
-
-const ActivityList: FC<Props> = ({ activities, onSelectActivity, deleteActivity, submitting }) => {
+const ActivityList: FC = () => {
+	const activityStore = useContext(ActivityStore);
+	const { activitiesByDate, selectActivity, deleteActivity, submitting } = activityStore;
 	const [target, setTarget] = useState("");
+
+	useEffect(() => {
+		activityStore.loadActivities();
+	}, [activityStore]);
 
 	useEffect(() => {
 		if (target && !submitting) {
 			console.log("oof");
 			setTarget("");
 		}
-	}, [submitting]);
+	}, [target, submitting]);
 
 	const handleDelete = (id: string) => (ev: SyntheticEvent<HTMLButtonElement>) => {
 		setTarget(ev.currentTarget.name);
 		deleteActivity(id);
 	};
 
+	if (activityStore.loading) return <Loader content={"Loading Activities..."} />;
+
 	return (
 		<Segment clearing>
 			<Item.Group divided>
-				{activities.map(({ id, title, description, category, city, date, venue }) => (
+				{activitiesByDate.map(({ id, title, description, category, city, date, venue }) => (
 					<Item key={id}>
 						<Item.Content>
 							<Item.Header as="a">{title}</Item.Header>
@@ -40,7 +43,7 @@ const ActivityList: FC<Props> = ({ activities, onSelectActivity, deleteActivity,
 							</Item.Description>
 							<Item.Extra>
 								<Button
-									onClick={() => onSelectActivity(id)}
+									onClick={() => selectActivity(id)}
 									floated="right"
 									content="View"
 									color="blue"
@@ -63,4 +66,4 @@ const ActivityList: FC<Props> = ({ activities, onSelectActivity, deleteActivity,
 	);
 };
 
-export default ActivityList;
+export default observer(ActivityList);
