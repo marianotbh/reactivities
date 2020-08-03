@@ -12,15 +12,25 @@ import {
 configure({ enforceActions: "always" });
 
 class ActivityStore {
-	@observable activityRegistry = new Map<string, IActivity>();
+	@observable activities = new Map<string, IActivity>();
 	@observable selectedActivity: IActivity | null = null;
 	@observable loading = false;
 	@observable submitting = false;
 
 	@computed get activitiesByDate() {
-		return Array.from(this.activityRegistry.values()).sort(
-			(a, b) => Date.parse(a.date) - Date.parse(b.date)
-		);
+		return Array.from(this.activities.values())
+			.sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
+			.reduce((groups, activity) => {
+				const date = activity.date.split("T")[0];
+
+				if (groups.has(date)) {
+					groups.get(date)!.add(activity);
+				} else {
+					groups.set(date, new Set([activity]));
+				}
+
+				return groups;
+			}, new Map<string, Set<IActivity>>());
 	}
 
 	@action loadActivities = async () => {
@@ -31,22 +41,22 @@ class ActivityStore {
 
 			runInAction("loading activity", () => {
 				activities.forEach(activity => {
-					this.activityRegistry.set(activity.id, {
+					this.activities.set(activity.id, {
 						...activity,
 						date: activity.date.split(".")[0]
 					});
 				});
 			});
 		} catch (error) {
-			alert(error);
+			console.error(error);
 		}
 
 		runInAction(() => (this.loading = false));
 	};
 
 	@action loadActivity = async (id: string) => {
-		if (this.activityRegistry.has(id)) {
-			this.selectedActivity = this.activityRegistry.get(id)!;
+		if (this.activities.has(id)) {
+			this.selectedActivity = this.activities.get(id)!;
 		} else {
 			this.loading = true;
 
@@ -74,7 +84,7 @@ class ActivityStore {
 			await createActivity(activity);
 
 			runInAction("creating activity", () => {
-				this.activityRegistry.set(activity.id, activity);
+				this.activities.set(activity.id, activity);
 			});
 		} catch (error) {
 			alert(error);
@@ -90,7 +100,7 @@ class ActivityStore {
 			await editActivity(activity);
 
 			runInAction("editing activity", () => {
-				this.activityRegistry.set(activity.id, activity);
+				this.activities.set(activity.id, activity);
 				this.selectedActivity = activity;
 			});
 		} catch (error) {
@@ -105,7 +115,7 @@ class ActivityStore {
 
 		try {
 			await deleteActivity(id);
-			runInAction("deleting activity", () => this.activityRegistry.delete(id));
+			runInAction("deleting activity", () => this.activities.delete(id));
 		} catch (error) {
 			alert(error);
 		}
@@ -114,4 +124,6 @@ class ActivityStore {
 	};
 }
 
-export default createContext(new ActivityStore());
+const store = createContext(new ActivityStore());
+
+export { store as ActivityStore };
