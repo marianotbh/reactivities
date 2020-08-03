@@ -1,6 +1,6 @@
 import React, { FC, useState, FormEvent, useContext, useEffect } from "react";
 import { Segment, Form, Button, Grid } from "semantic-ui-react";
-import { IActivity } from "../../app/models/activity";
+import { Activity } from "../../app/models/Activity";
 import { v4 as uuid } from "uuid";
 import { ActivityStore } from "../../app/store/activityStore";
 import { observer } from "mobx-react-lite";
@@ -21,7 +21,7 @@ const ActivityForm: FC<RouteComponentProps<Params>> = ({ match, history }) => {
 		clearActivity
 	} = activityStore;
 
-	const [activity, setActivity] = useState<IActivity>({
+	const [activity, setActivity] = useState<Activity>({
 		id: "",
 		title: "",
 		category: "",

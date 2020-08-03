@@ -2,7 +2,7 @@ import React, { FC, Fragment } from "react";
 import { Segment, Header, Form, Button, Comment } from "semantic-ui-react";
 import { observer } from "mobx-react-lite";
 
-const DetailChat: FC = () => {
+const ActivityDetailsChat: FC = () => {
 	return (
 		<Fragment>
 			<Segment textAlign="center" attached="top" inverted color="teal" style={{ border: "none" }}>
@@ -48,4 +48,4 @@ const DetailChat: FC = () => {
 	);
 };
 
-export default observer(DetailChat);
+export default observer(ActivityDetailsChat);

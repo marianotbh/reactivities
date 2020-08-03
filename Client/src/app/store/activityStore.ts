@@ -1,6 +1,6 @@
 import { observable, action, computed, configure, runInAction } from "mobx";
 import { createContext } from "react";
-import { IActivity } from "../models/activity";
+import { Activity } from "../models/Activity";
 import {
 	getActivities,
 	createActivity,
@@ -12,8 +12,8 @@ import {
 configure({ enforceActions: "always" });
 
 class ActivityStore {
-	@observable activities = new Map<string, IActivity>();
-	@observable selectedActivity: IActivity | null = null;
+	@observable activities = new Map<string, Activity>();
+	@observable selectedActivity: Activity | null = null;
 	@observable loading = false;
 	@observable submitting = false;
 
@@ -30,7 +30,7 @@ class ActivityStore {
 				}
 
 				return groups;
-			}, new Map<string, Set<IActivity>>());
+			}, new Map<string, Set<Activity>>());
 	}
 
 	@action loadActivities = async () => {
@@ -77,7 +77,7 @@ class ActivityStore {
 		this.selectedActivity = null;
 	};
 
-	@action createActivity = async (activity: IActivity) => {
+	@action createActivity = async (activity: Activity) => {
 		this.submitting = true;
 
 		try {
@@ -93,7 +93,7 @@ class ActivityStore {
 		runInAction(() => (this.submitting = false));
 	};
 
-	@action editActivity = async (activity: IActivity) => {
+	@action editActivity = async (activity: Activity) => {
 		this.submitting = true;
 
 		try {

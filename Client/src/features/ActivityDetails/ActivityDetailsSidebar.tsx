@@ -3,7 +3,7 @@ import { Segment, List, Item, Label, Image } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 
-const DetailSidebar: FC = () => {
+const ActivityDetailsSidebar: FC = () => {
 	return (
 		<Fragment>
 			<Segment
@@ -55,4 +55,4 @@ const DetailSidebar: FC = () => {
 	);
 };
 
-export default observer(DetailSidebar);
+export default observer(ActivityDetailsSidebar);

@@ -4,10 +4,10 @@ import { observer } from "mobx-react-lite";
 import { Grid } from "semantic-ui-react";
 import { RouteComponentProps } from "react-router-dom";
 import Loader from "../../app/layout/Loader";
-import DetailHeader from "./DetailHeader";
-import DetailInfo from "./DetailInfo";
-import DetailChat from "./DetailChat";
-import DetailSidebar from "./DetailSidebar";
+import ActivityDetailsHeader from "./ActivityDetailsHeader";
+import ActivityDetailsInfo from "./ActivityDetailsInfo";
+import ActivityDetailsChat from "./ActivityDetailsChat";
+import ActivityDetailsSidebar from "./ActivityDetailsSidebar";
 
 type Params = {
 	id: string;
@@ -27,12 +27,12 @@ const ActivityDetails: FC<RouteComponentProps<Params>> = ({ match, history }) =>
 	return (
 		<Grid>
 			<Grid.Column width={10}>
-				<DetailHeader {...selectedActivity} />
-				<DetailInfo {...selectedActivity} />
-				<DetailChat />
+				<ActivityDetailsHeader {...selectedActivity} />
+				<ActivityDetailsInfo {...selectedActivity} />
+				<ActivityDetailsChat />
 			</Grid.Column>
 			<Grid.Column width={6}>
-				<DetailSidebar />
+				<ActivityDetailsSidebar />
 			</Grid.Column>
 		</Grid>
 	);

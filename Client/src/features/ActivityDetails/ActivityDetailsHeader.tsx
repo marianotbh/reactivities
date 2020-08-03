@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Segment, Button, Image, Header, Item } from "semantic-ui-react";
-import { IActivity } from "../../app/models/activity";
+import { Activity } from "../../app/models/Activity";
 import { observer } from "mobx-react-lite";
 
 const activityImageStyle = {
@@ -16,7 +16,7 @@ const activityImageTextStyle = {
 	color: "white"
 };
 
-const DetailHeader: FC<IActivity> = ({ title, date, category }) => {
+const ActivityDetailsHeader: FC<Activity> = ({ title, date, category }) => {
 	return (
 		<Segment.Group>
 			<Segment basic attached="top" style={{ padding: "0" }}>
@@ -46,4 +46,4 @@ const DetailHeader: FC<IActivity> = ({ title, date, category }) => {
 	);
 };
 
-export default observer(DetailHeader);
+export default observer(ActivityDetailsHeader);

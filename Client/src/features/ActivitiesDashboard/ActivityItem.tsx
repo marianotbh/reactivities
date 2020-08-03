@@ -1,9 +1,9 @@
 import React, { FC } from "react";
 import { Item, Button, Segment, Icon } from "semantic-ui-react";
-import { IActivity } from "../../app/models/activity";
+import { Activity } from "../../app/models/Activity";
 import { Link } from "react-router-dom";
 
-const ActivityItem: FC<IActivity> = ({ id, title, date, description, city, venue, category }) => {
+const ActivityItem: FC<Activity> = ({ id, title, date, description, city, venue, category }) => {
 	return (
 		<Segment.Group>
 			<Segment>

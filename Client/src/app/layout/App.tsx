@@ -4,9 +4,9 @@ import { observer } from "mobx-react-lite";
 import { Container } from "semantic-ui-react";
 import Navbar from "./Navbar";
 import Home from "../../features/Home";
-import ActivityDashboard from "../../features/Dashboard";
-import ActivityForm from "../../features/Dashboard/ActivityForm";
-import ActivityDetails from "../../features/Details";
+import ActivitiesDashboard from "../../features/ActivitiesDashboard";
+import ActivityForm from "../../features/ActivitiesDashboard/ActivityForm";
+import ActivityDetails from "../../features/ActivityDetails";
 import ScrollToTop from "./ScrollToTop";
 
 const Layout = withRouter(({ location }: RouteComponentProps) => (
@@ -18,7 +18,7 @@ const Layout = withRouter(({ location }: RouteComponentProps) => (
 				<>
 					<Navbar />
 					<Container style={{ marginTop: "7rem" }}>
-						<Route exact path="/activities" component={ActivityDashboard} />
+						<Route exact path="/activities" component={ActivitiesDashboard} />
 						<Route path="/details/:id" component={ActivityDetails} />
 						<Route
 							key={location.key}
