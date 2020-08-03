@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { BrowserRouter as Router, Route, withRouter, RouteComponentProps } from "react-router-dom";
+import { Router, Route, withRouter, RouteComponentProps, Switch } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { Container } from "semantic-ui-react";
 import Navbar from "./Navbar";
@@ -8,6 +8,9 @@ import ActivitiesDashboard from "../../features/ActivitiesDashboard";
 import ActivityForm from "../../features/ActivitiesDashboard/ActivityForm";
 import ActivityDetails from "../../features/ActivityDetails";
 import ScrollToTop from "./ScrollToTop";
+import NotFound from "./NotFound";
+import { history } from "./history";
+import { ToastContainer } from "react-toastify";
 
 const Layout = withRouter(({ location }: RouteComponentProps) => (
 	<>
@@ -18,13 +21,16 @@ const Layout = withRouter(({ location }: RouteComponentProps) => (
 				<>
 					<Navbar />
 					<Container style={{ marginTop: "7rem" }}>
-						<Route exact path="/activities" component={ActivitiesDashboard} />
-						<Route path="/details/:id" component={ActivityDetails} />
-						<Route
-							key={location.key}
-							path={["/new-activity", "/edit-activity/:id"]}
-							component={ActivityForm}
-						/>
+						<Switch>
+							<Route exact path="/activities" component={ActivitiesDashboard} />
+							<Route path="/details/:id" component={ActivityDetails} />
+							<Route
+								key={location.key}
+								path={["/new-activity", "/edit-activity/:id"]}
+								component={ActivityForm}
+							/>
+							<Route component={NotFound} />
+						</Switch>
 					</Container>
 				</>
 			)}
@@ -33,7 +39,8 @@ const Layout = withRouter(({ location }: RouteComponentProps) => (
 ));
 
 const App: FC = () => (
-	<Router>
+	<Router history={history}>
+		<ToastContainer position="bottom-right" />
 		<ScrollToTop />
 		<Layout />
 	</Router>

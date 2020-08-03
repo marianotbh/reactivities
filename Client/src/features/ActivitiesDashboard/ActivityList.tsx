@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, useContext } from "react";
+import React, { FC, useState, useEffect, useContext, Fragment } from "react";
 import { Item, Label } from "semantic-ui-react";
 import { observer } from "mobx-react-lite";
 import { ActivityStore } from "../../app/store/activityStore";
@@ -25,7 +25,7 @@ const ActivityList: FC = () => {
 	) : (
 		<>
 			{Array.from(activitiesByDate).map(([date, activities]) => (
-				<>
+				<Fragment key={date}>
 					<Label key={date} size="large" color="blue">
 						{date}
 					</Label>
@@ -34,7 +34,7 @@ const ActivityList: FC = () => {
 							<ActivityItem key={activity.id} {...activity} />
 						))}
 					</Item.Group>
-				</>
+				</Fragment>
 			))}
 		</>
 	);

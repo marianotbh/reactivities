@@ -38,7 +38,6 @@ class ActivityStore {
 
 		try {
 			const activities = await getActivities();
-
 			runInAction("loading activity", () => {
 				activities.forEach(activity => {
 					this.activities.set(activity.id, {
@@ -47,11 +46,9 @@ class ActivityStore {
 					});
 				});
 			});
-		} catch (error) {
-			console.error(error);
+		} finally {
+			runInAction(() => (this.loading = false));
 		}
-
-		runInAction(() => (this.loading = false));
 	};
 
 	@action loadActivity = async (id: string) => {
@@ -65,11 +62,9 @@ class ActivityStore {
 				runInAction("getting activity", () => {
 					this.selectedActivity = activity;
 				});
-			} catch (error) {
-				console.log(error);
+			} finally {
+				runInAction(() => (this.loading = false));
 			}
-
-			runInAction(() => (this.loading = false));
 		}
 	};
 
@@ -86,11 +81,9 @@ class ActivityStore {
 			runInAction("creating activity", () => {
 				this.activities.set(activity.id, activity);
 			});
-		} catch (error) {
-			alert(error);
+		} finally {
+			runInAction(() => (this.submitting = false));
 		}
-
-		runInAction(() => (this.submitting = false));
 	};
 
 	@action editActivity = async (activity: Activity) => {
@@ -103,11 +96,9 @@ class ActivityStore {
 				this.activities.set(activity.id, activity);
 				this.selectedActivity = activity;
 			});
-		} catch (error) {
-			alert(error);
+		} finally {
+			runInAction(() => (this.submitting = false));
 		}
-
-		runInAction(() => (this.submitting = false));
 	};
 
 	@action deleteActivity = async (id: string) => {
@@ -115,12 +106,11 @@ class ActivityStore {
 
 		try {
 			await deleteActivity(id);
-			runInAction("deleting activity", () => this.activities.delete(id));
-		} catch (error) {
-			alert(error);
-		}
 
-		runInAction(() => (this.submitting = false));
+			runInAction("deleting activity", () => this.activities.delete(id));
+		} finally {
+			runInAction(() => (this.submitting = false));
+		}
 	};
 }
 

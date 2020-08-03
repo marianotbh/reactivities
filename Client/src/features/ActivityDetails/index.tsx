@@ -20,7 +20,7 @@ const ActivityDetails: FC<RouteComponentProps<Params>> = ({ match, history }) =>
 
 	useEffect(() => {
 		loadActivity(match.params.id);
-	}, [loadActivity, match.params.id]);
+	}, [loadActivity, match.params.id, history]);
 
 	if (loading || !selectedActivity) return <Loader content={"Loading activity..."} />;
 

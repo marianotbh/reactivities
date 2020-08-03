@@ -1,7 +1,28 @@
 import axios from "axios";
+import { history } from "../layout/history";
+import { toast } from "react-toastify";
 
-const agent = axios.create({
-	baseURL: "http://localhost:5000/api"
+axios.defaults.baseURL = "http://localhost:5000/api";
+axios.interceptors.response.use(undefined, error => {
+	if (error.message === "Network Error" && !error.response) {
+		toast.error("Network error");
+	} else {
+		const { status, data, config } = error.response;
+
+		switch (status) {
+			case 404:
+				history.push("/not-found");
+				break;
+			case 400:
+				if (config.method === "get" && "id" in data.errors) history.push("/not-found");
+				break;
+			case 500:
+				toast.error("oops! something went wrong");
+				break;
+		}
+	}
+
+	throw error;
 });
 
 async function sleep(ms: number) {
@@ -9,31 +30,26 @@ async function sleep(ms: number) {
 }
 
 export async function GET<T = {}>(url: string) {
-	const { data } = await agent.get<T>(url);
 	await sleep(250);
-	return data;
+	return (await axios.get<T>(url)).data;
 }
 
 export async function POST<T = {}>(url: string, body: {}) {
-	const { data } = await agent.post<T>(url, body);
 	await sleep(1000);
-	return data;
+	return (await axios.post<T>(url, body)).data;
 }
 
 export async function PUT<T = {}>(url: string, body: {}) {
-	const { data } = await agent.put<T>(url, body);
 	await sleep(1000);
-	return data;
+	return (await axios.put<T>(url, body)).data;
 }
 
 export async function PATCH<T = {}>(url: string, body: {}) {
-	const { data } = await agent.patch<T>(url, body);
 	await sleep(1000);
-	return data;
+	return (await axios.patch<T>(url, body)).data;
 }
 
 export async function DELETE<T = {}>(url: string) {
-	const { data } = await agent.delete<T>(url);
 	await sleep(1000);
-	return data;
+	return (await axios.delete<T>(url)).data;
 }
