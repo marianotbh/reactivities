@@ -3,10 +3,11 @@ import { Item, Button, Label, Segment } from "semantic-ui-react";
 import { observer } from "mobx-react-lite";
 import ActivityStore from "../../app/store/activityStore";
 import Loader from "../../app/layout/Loader";
+import { Link } from "react-router-dom";
 
 const ActivityList: FC = () => {
 	const activityStore = useContext(ActivityStore);
-	const { activitiesByDate, selectActivity, deleteActivity, submitting } = activityStore;
+	const { activitiesByDate, deleteActivity, submitting } = activityStore;
 	const [target, setTarget] = useState("");
 
 	useEffect(() => {
@@ -15,7 +16,6 @@ const ActivityList: FC = () => {
 
 	useEffect(() => {
 		if (target && !submitting) {
-			console.log("oof");
 			setTarget("");
 		}
 	}, [target, submitting]);
@@ -43,7 +43,8 @@ const ActivityList: FC = () => {
 							</Item.Description>
 							<Item.Extra>
 								<Button
-									onClick={() => selectActivity(id)}
+									as={Link}
+									to={`/details/${id}`}
 									floated="right"
 									content="View"
 									color="blue"

@@ -1,14 +1,19 @@
 import { observable, action, computed, configure, runInAction } from "mobx";
 import { createContext } from "react";
 import { IActivity } from "../models/activity";
-import { getActivities, createActivity, editActivity, deleteActivity } from "../api/activities";
+import {
+	getActivities,
+	createActivity,
+	editActivity,
+	deleteActivity,
+	getActivity
+} from "../api/activities";
 
 configure({ enforceActions: "always" });
 
 class ActivityStore {
 	@observable activityRegistry = new Map<string, IActivity>();
 	@observable selectedActivity: IActivity | null = null;
-	@observable editMode = false;
 	@observable loading = false;
 	@observable submitting = false;
 
@@ -39,6 +44,29 @@ class ActivityStore {
 		runInAction(() => (this.loading = false));
 	};
 
+	@action loadActivity = async (id: string) => {
+		if (this.activityRegistry.has(id)) {
+			this.selectedActivity = this.activityRegistry.get(id)!;
+		} else {
+			this.loading = true;
+
+			try {
+				const activity = await getActivity(id);
+				runInAction("getting activity", () => {
+					this.selectedActivity = activity;
+				});
+			} catch (error) {
+				console.log(error);
+			}
+
+			runInAction(() => (this.loading = false));
+		}
+	};
+
+	@action clearActivity = () => {
+		this.selectedActivity = null;
+	};
+
 	@action createActivity = async (activity: IActivity) => {
 		this.submitting = true;
 
@@ -47,7 +75,6 @@ class ActivityStore {
 
 			runInAction("creating activity", () => {
 				this.activityRegistry.set(activity.id, activity);
-				this.editMode = false;
 			});
 		} catch (error) {
 			alert(error);
@@ -65,7 +92,6 @@ class ActivityStore {
 			runInAction("editing activity", () => {
 				this.activityRegistry.set(activity.id, activity);
 				this.selectedActivity = activity;
-				this.editMode = false;
 			});
 		} catch (error) {
 			alert(error);
@@ -85,33 +111,6 @@ class ActivityStore {
 		}
 
 		runInAction(() => (this.submitting = false));
-	};
-
-	@action openCreateForm = () => {
-		this.editMode = true;
-		this.selectedActivity = null;
-	};
-
-	@action openEditForm = (id: string) => {
-		this.selectedActivity = this.activityRegistry.get(id) ?? null;
-		this.editMode = true;
-	};
-
-	@action selectActivity = (id: string) => {
-		this.selectedActivity = this.activityRegistry.get(id) ?? null;
-		this.editMode = false;
-	};
-
-	@action deselectActivity = () => {
-		this.selectedActivity = null;
-	};
-
-	@action toggleEditMode = (force?: boolean) => {
-		if (typeof force !== "undefined") {
-			this.editMode = force;
-		} else {
-			this.editMode = !this.editMode;
-		}
 	};
 }
 

@@ -5,7 +5,7 @@ export async function getActivities() {
 	return agent.GET<IActivity[]>(`/activities`);
 }
 
-export async function getDetails(id: string) {
+export async function getActivity(id: string) {
 	return agent.GET<IActivity>(`/activities/${id}`);
 }
 

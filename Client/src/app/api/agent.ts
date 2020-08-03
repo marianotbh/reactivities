@@ -10,7 +10,7 @@ async function sleep(ms: number) {
 
 export async function GET<T = {}>(url: string) {
 	const { data } = await agent.get<T>(url);
-	await sleep(1000);
+	await sleep(250);
 	return data;
 }
 

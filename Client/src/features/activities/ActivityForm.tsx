@@ -1,44 +1,62 @@
-import React, { FC, useState, FormEvent, useContext } from "react";
+import React, { FC, useState, FormEvent, useContext, useEffect } from "react";
 import { Segment, Form, Button } from "semantic-ui-react";
 import { IActivity } from "../../app/models/activity";
 import { v4 as uuid } from "uuid";
 import ActivityStore from "../../app/store/activityStore";
 import { observer } from "mobx-react-lite";
+import { RouteComponentProps } from "react-router-dom";
 
-type Props = {
-	activity: IActivity | null;
+type Params = {
+	id: string;
 };
 
-const ActivityForm: FC<Props> = ({ activity: initialActivitiyState }) => {
+const ActivityForm: FC<RouteComponentProps<Params>> = ({ match, history }) => {
 	const activityStore = useContext(ActivityStore);
+	const {
+		createActivity,
+		editActivity,
+		selectedActivity,
+		submitting,
+		loadActivity,
+		clearActivity
+	} = activityStore;
 
-	const { createActivity, editActivity, submitting, toggleEditMode } = activityStore;
+	const [activity, setActivity] = useState<IActivity>({
+		id: "",
+		title: "",
+		category: "",
+		description: "",
+		date: "",
+		city: "",
+		venue: ""
+	});
 
-	const [activity, setActivity] = useState<IActivity>(
-		initialActivitiyState ?? {
-			id: "",
-			title: "",
-			category: "",
-			description: "",
-			date: "",
-			city: "",
-			venue: ""
+	useEffect(() => {
+		if (match.params.id && activity.id.length === 0) {
+			loadActivity(match.params.id).then(() => {
+				selectedActivity && setActivity(selectedActivity);
+			});
 		}
-	);
+
+		return () => clearActivity();
+	}, [loadActivity, clearActivity, match.params.id, activity.id.length, selectedActivity]);
 
 	const handleInputChange = (ev: FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const { name, value } = ev.currentTarget;
 		setActivity({ ...activity, [name]: value });
 	};
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		if (activity.id.length === 0) {
-			createActivity({
+			const newActivity = {
 				...activity,
 				id: uuid()
-			});
+			};
+			await createActivity(newActivity);
+			history.push(`/details/${newActivity.id}`);
 		} else {
-			editActivity(activity);
+			await editActivity(activity);
+			history.push(`/activities`);
 		}
 	};
 
@@ -85,7 +103,7 @@ const ActivityForm: FC<Props> = ({ activity: initialActivitiyState }) => {
 				/>
 				<Button loading={submitting} floated="right" positive type="submit" content="Submit" />
 				<Button
-					onClick={() => toggleEditMode(false)}
+					onClick={() => history.push(`/activities`)}
 					floated="right"
 					type="button"
 					content="Cancel"
