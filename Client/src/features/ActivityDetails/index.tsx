@@ -10,32 +10,36 @@ import ActivityDetailsChat from "./ActivityDetailsChat";
 import ActivityDetailsSidebar from "./ActivityDetailsSidebar";
 
 type Params = {
-	id: string;
+  id: string;
 };
 
-const ActivityDetails: FC<RouteComponentProps<Params>> = ({ match, history }) => {
-	const activityStore = useContext(ActivityStore);
+const ActivityDetails: FC<RouteComponentProps<Params>> = ({
+  match,
+  history,
+}) => {
+  const activityStore = useContext(ActivityStore);
 
-	const { selectedActivity, loadActivity, loading } = activityStore;
+  const { selectedActivity, loadActivity, loading } = activityStore;
 
-	useEffect(() => {
-		loadActivity(match.params.id);
-	}, [loadActivity, match.params.id, history]);
+  useEffect(() => {
+    loadActivity(match.params.id);
+  }, [loadActivity, match.params.id, history]);
 
-	if (loading || !selectedActivity) return <Loader content={"Loading activity..."} />;
+  if (loading || !selectedActivity)
+    return <Loader content={"Loading activity..."} />;
 
-	return (
-		<Grid>
-			<Grid.Column width={10}>
-				<ActivityDetailsHeader {...selectedActivity} />
-				<ActivityDetailsInfo {...selectedActivity} />
-				<ActivityDetailsChat />
-			</Grid.Column>
-			<Grid.Column width={6}>
-				<ActivityDetailsSidebar />
-			</Grid.Column>
-		</Grid>
-	);
+  return (
+    <Grid>
+      <Grid.Column width={10}>
+        <ActivityDetailsHeader {...selectedActivity} />
+        <ActivityDetailsInfo {...selectedActivity} />
+        <ActivityDetailsChat />
+      </Grid.Column>
+      <Grid.Column width={6}>
+        <ActivityDetailsSidebar />
+      </Grid.Column>
+    </Grid>
+  );
 };
 
 export default observer(ActivityDetails);

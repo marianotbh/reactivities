@@ -11,7 +11,7 @@ namespace Application.Activities
 {
     public class Create
     {
-        public class Command : IRequest
+        public class Command : IRequest<Activity>
         {
             public Guid Id { get; set; }
 
@@ -41,7 +41,7 @@ namespace Application.Activities
             }
         }
 
-        public class Handler : IRequestHandler<Command>
+        public class Handler : IRequestHandler<Command, Activity>
         {
             private readonly DataContext context;
 
@@ -50,7 +50,7 @@ namespace Application.Activities
                 this.context = context;
             }
 
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Activity> Handle(Command request, CancellationToken cancellationToken)
             {
                 var activity = new Activity
                 {
@@ -67,7 +67,7 @@ namespace Application.Activities
 
                 var success = await context.SaveChangesAsync() > 0;
 
-                if (success) return Unit.Value;
+                if (success) return activity;
 
                 throw new Exception("Problem creating activity");
             }

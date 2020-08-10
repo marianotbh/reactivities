@@ -6,38 +6,38 @@ import Loader from "../../app/layout/Loader";
 import ActivityItem from "./ActivityItem";
 
 const ActivityList: FC = () => {
-	const activityStore = useContext(ActivityStore);
-	const { activitiesByDate, submitting } = activityStore;
-	const [target, setTarget] = useState("");
+  const activityStore = useContext(ActivityStore);
+  const { activitiesByDate, submitting } = activityStore;
+  const [target, setTarget] = useState("");
 
-	useEffect(() => {
-		activityStore.loadActivities();
-	}, [activityStore]);
+  useEffect(() => {
+    activityStore.loadActivities();
+  }, [activityStore]);
 
-	useEffect(() => {
-		if (target && !submitting) {
-			setTarget("");
-		}
-	}, [target, submitting]);
+  useEffect(() => {
+    if (target && !submitting) {
+      setTarget("");
+    }
+  }, [target, submitting]);
 
-	return activityStore.loading ? (
-		<Loader content={"Loading Activities..."} />
-	) : (
-		<>
-			{Array.from(activitiesByDate).map(([date, activities]) => (
-				<Fragment key={date}>
-					<Label key={date} size="large" color="blue">
-						{date}
-					</Label>
-					<Item.Group divided>
-						{Array.from(activities).map(activity => (
-							<ActivityItem key={activity.id} {...activity} />
-						))}
-					</Item.Group>
-				</Fragment>
-			))}
-		</>
-	);
+  return activityStore.loading ? (
+    <Loader content={"Loading Activities..."} />
+  ) : (
+    <>
+      {activitiesByDate.map(([date, activities]) => (
+        <Fragment key={date}>
+          <Label key={date} size="large" color="blue">
+            {date}
+          </Label>
+          <Item.Group divided>
+            {activities.map((activity) => (
+              <ActivityItem key={activity.id} {...activity} />
+            ))}
+          </Item.Group>
+        </Fragment>
+      ))}
+    </>
+  );
 };
 
 export default observer(ActivityList);
