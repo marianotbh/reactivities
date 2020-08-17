@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Persistence\Persistence.csproj", "{4434ACA4-5252-4AEA-A2CA-737F7FE55D0E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{FA420D19-248C-4865-BEC0-9003546CE130}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,5 +74,17 @@ Global
 		{4434ACA4-5252-4AEA-A2CA-737F7FE55D0E}.Release|x64.Build.0 = Release|Any CPU
 		{4434ACA4-5252-4AEA-A2CA-737F7FE55D0E}.Release|x86.ActiveCfg = Release|Any CPU
 		{4434ACA4-5252-4AEA-A2CA-737F7FE55D0E}.Release|x86.Build.0 = Release|Any CPU
+		{FA420D19-248C-4865-BEC0-9003546CE130}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA420D19-248C-4865-BEC0-9003546CE130}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA420D19-248C-4865-BEC0-9003546CE130}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FA420D19-248C-4865-BEC0-9003546CE130}.Debug|x64.Build.0 = Debug|Any CPU
+		{FA420D19-248C-4865-BEC0-9003546CE130}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FA420D19-248C-4865-BEC0-9003546CE130}.Debug|x86.Build.0 = Debug|Any CPU
+		{FA420D19-248C-4865-BEC0-9003546CE130}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA420D19-248C-4865-BEC0-9003546CE130}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA420D19-248C-4865-BEC0-9003546CE130}.Release|x64.ActiveCfg = Release|Any CPU
+		{FA420D19-248C-4865-BEC0-9003546CE130}.Release|x64.Build.0 = Release|Any CPU
+		{FA420D19-248C-4865-BEC0-9003546CE130}.Release|x86.ActiveCfg = Release|Any CPU
+		{FA420D19-248C-4865-BEC0-9003546CE130}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

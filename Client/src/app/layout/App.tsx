@@ -1,11 +1,5 @@
 import React, { FC } from "react";
-import {
-  Router,
-  Route,
-  withRouter,
-  RouteComponentProps,
-  Switch,
-} from "react-router-dom";
+import { Router, Route, Switch } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { Container } from "semantic-ui-react";
 import Navbar from "./Navbar";
@@ -21,8 +15,10 @@ import dateFnsLocalizer from "react-widgets-date-fns";
 
 dateFnsLocalizer();
 
-const Layout = withRouter(({ location }: RouteComponentProps) => (
-  <>
+const App: FC = () => (
+  <Router history={history}>
+    <ToastContainer position="bottom-right" />
+    <ScrollToTop />
     <Route exact path="/" component={Home} />
     <Route
       path={"/(.+)"}
@@ -34,7 +30,7 @@ const Layout = withRouter(({ location }: RouteComponentProps) => (
               <Route exact path="/activities" component={ActivitiesDashboard} />
               <Route path="/details/:id" component={ActivityDetails} />
               <Route
-                key={location.key}
+                key={history.location.key}
                 path={["/new-activity", "/edit-activity/:id"]}
                 component={ActivityForm}
               />
@@ -44,14 +40,6 @@ const Layout = withRouter(({ location }: RouteComponentProps) => (
         </>
       )}
     />
-  </>
-));
-
-const App: FC = () => (
-  <Router history={history}>
-    <ToastContainer position="bottom-right" />
-    <ScrollToTop />
-    <Layout />
   </Router>
 );
 
