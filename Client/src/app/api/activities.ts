@@ -1,22 +1,22 @@
 import { Activity } from "../models/Activity";
-import { GET, POST, PUT, DELETE } from "./agent";
+import { GET, POST, PUT, DELETE } from ".";
 
-export async function getActivities() {
+export function getActivities() {
   return GET<Activity[]>(`/activities`);
 }
 
-export async function getActivity(id: string) {
+export function getActivity(id: string) {
   return GET<Activity>(`/activities/${id}`);
 }
 
-export async function createActivity(body: Activity) {
+export function createActivity(body: Activity) {
   return POST<{ id: string }>(`/activities`, body);
 }
 
-export async function editActivity(body: Activity) {
+export function editActivity(body: Activity) {
   return PUT(`/activities/${body.id}`, body);
 }
 
-export async function deleteActivity(id: string) {
+export function deleteActivity(id: string) {
   return DELETE(`/activities/${id}`);
 }

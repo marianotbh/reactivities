@@ -2,7 +2,7 @@ import React, { FC, useState, useContext, useEffect } from "react";
 import { Segment, Form, Button, Grid } from "semantic-ui-react";
 import { EditableActivity } from "../../app/models/Activity";
 import { v4 as uuid } from "uuid";
-import { ActivityStore } from "../../app/store/activityStore";
+import { RootStoreContext } from "../../app/store";
 import { observer } from "mobx-react-lite";
 import { RouteComponentProps } from "react-router-dom";
 import { Form as FinalForm, Field } from "react-final-form";
@@ -39,13 +39,10 @@ type Params = {
 };
 
 const ActivityForm: FC<RouteComponentProps<Params>> = ({ match, history }) => {
-  const activityStore = useContext(ActivityStore);
   const {
-    createActivity,
-    editActivity,
-    submitting,
-    loadActivity,
-  } = activityStore;
+    activityStore: { createActivity, editActivity, submitting, loadActivity },
+  } = useContext(RootStoreContext);
+
   const [loading, setLoading] = useState(false);
 
   const [activity, setActivity] = useState<EditableActivity>({

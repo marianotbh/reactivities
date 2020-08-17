@@ -1,5 +1,5 @@
-import { observable, action, computed, configure, runInAction } from "mobx";
-import { createContext } from "react";
+import { observable, action, computed, runInAction } from "mobx";
+import { RootStore } from ".";
 import { Activity } from "../models/Activity";
 import {
   getActivities,
@@ -9,9 +9,13 @@ import {
   getActivity,
 } from "../api/activities";
 
-configure({ enforceActions: "always" });
+export class ActivityStore {
+  rootStore: RootStore;
 
-class ActivityStore {
+  constructor(rootStore: RootStore) {
+    this.rootStore = rootStore;
+  }
+
   @observable activities = new Map<string, Activity>();
   @observable selectedActivity: Activity | null = null;
   @observable loading = false;
@@ -122,7 +126,3 @@ class ActivityStore {
     }
   };
 }
-
-const store = createContext(new ActivityStore());
-
-export { store as ActivityStore };
